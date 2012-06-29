@@ -1,1 +1,30 @@
 This is README for my first project (yViewportModificator)
+
+This small library emulates one of the many features which implements the CSS media queries.
+Library set class name for body element depending on the width of viewport.
+This is similar to CSS media queries feature:
+	"media screen and (min-width: 100px) and (max-width: 500px)"
+ 
+All of this actually for browser IE versions less 9 (which not support CSS media queries).
+ 
+For example: 
+	Basically you must include only one script into head tag:
+	<script type="text/javascript" src="yViewportModificator.js"></script>
+   
+	Optionally you can set properties:
+	<script type="text/javascript">
+		yViewportModificator.configure({
+		class_mask: 'someclass_',
+		widths: [800, 1000, 1500]
+ 	});
+	</script>
+
+   The result for this example will be several options for class names for body element, depending on the current screen width:
+   If width of browser's window equal (for example): 
+   		- 900px then class name will "someclass_800-someclass_1500 someclass_800-someclass_1000";
+   		- 1100px then class name will "someclass_800-someclass_1500 someclass_800-someclass_1000 someclass_1000-someclass_1500".
+
+   
+Maintained few of following options:
+	class_mask - mask of class name which set for body tag ("body_" by default)
+	widths - an array of integer values of the widths of the viewport ([320, 480, 600, 800, 1000, 1200, 1600] by default)
