@@ -145,7 +145,7 @@ var yViewportModificator = (function () {
 		
 		if (arguments.length > 1) {
 			for (var k = 1; k < arguments.length; k += 1) {
-				target = _fullMerge(target, arguments[k]);
+				target = _merge(target, arguments[k]);
 			}
 		}
 		
@@ -154,18 +154,34 @@ var yViewportModificator = (function () {
 	
 	
 	/**
-	 * Merges two objects recursive
+	 * Merges two objects by keys first object
 	 * 
 	 * @return {Object} Target object
 	 */
-	function _fullMerge(target, obj) {
+	function _merge(target, obj) {
 		for (var key in obj) {
-			target[key] = (typeof obj[key] === 'object') && (key in target) ? 
-				_fullMerge(target[key], obj[key]) :
-				obj[key];
+			if (key in target) {
+				target[key] = obj[key];
+			}
 		}
 		
 		return target;
+	}
+
+
+	/**
+	 * Event handler for change class name.
+	 *
+	 * @return {Void}
+	 */
+	function _setClassEvent() {
+		var clasName = _resetClass();
+
+		if (!clasName) {
+			element.removeAttribute('class');
+		} else {
+			element.className = clasName;
+		}
 	}
 	
 	
@@ -176,10 +192,10 @@ var yViewportModificator = (function () {
 	 */
 	function _registerHandlers() {
 		element = document.body;
-		element.className = _resetClass();
+		_setClassEvent();
 		
 		_addEvent(window, 'resize', function () {
-			element.className = _resetClass();
+			_setClassEvent();
 		});
 	}
 	
@@ -207,7 +223,7 @@ var yViewportModificator = (function () {
 	 * @return {Object} The module instance
 	 */
 	module.init = function () {
-		if (!_isIELt9()) { // @todo убрать ! после отладки
+		if (_isIELt9()) {
 			_addEvent(window, 'load', _registerHandlers);
 		}
 		
